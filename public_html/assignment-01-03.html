@@ -1,0 +1,193 @@
+<! DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js'></script>
+
+		<style type='text/css'>
+			body {
+				font: 12px sans-serif;
+			}
+
+			.axis path,
+			.axis line {
+				fill: none;
+				stroke: #000;
+				shape-rendering: crispEdges;
+			}
+
+			.x.axis path {
+				fill: none;
+				stroke: #000;
+				shape-rendering: crispEdges;
+			}
+
+			.line {
+				fill: none;
+				stroke-width: 7px;
+			}
+
+			.state {
+				opacity: 0.5;
+			}
+
+			.state:hover {
+				opacity: 1;
+			}
+		</style>
+	</head>
+
+	<body>
+		<p id='menu'><br>Select state: 
+			<select>
+				<option value='PA'>Pennsylvania</option>
+				<option value='MA'>Pennsylvania</option>
+				<option value='WA'>Pennsylvania</option>
+				<option value='CA'>Pennsylvania</option>
+				<option value='TX'>Pennsylvania</option>
+				<option value='NY'>Pennsylvania</option>
+			</select>
+		</br></p>
+
+		<script type='text/javascript'>
+
+			//set area for visualization
+			var margin = {top: 20, right: 80, bottom: 30, left: 50},
+				width = 660 - margin.left - margin.right;
+				heigth = 400 - margin.top - margin.bottom;
+				x = d3.time.scale().range([0,w]),
+				y = d3.scale.linear().range([h, 0]);
+				parseDate = d3.time.format('%Y').parse;
+
+			var color = d3.scale.category10();
+
+			//for later use
+			var states,
+				filtered,
+				transpose;
+
+			var line = d3.svg.line()
+						.interpolate('basis')
+						.x(function(d) { return x(d.year); })
+						.y(function(d) { return y(d.stat); });
+
+			var svg = d3.selectAll('body').append('svg')
+						.attr('width', width + margin.left + margin.right)
+						.attr('height', height + margin.bottem + margin.top)
+						.append('g')
+						.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+			var xAxis = d3.svg.axis()
+						.scale(x)
+						.orient('bottom')
+						svg.append('svg:g')
+						.attr('class', 'x axis');
+
+			var yAxis = d3.svg.axis()
+						.scale(y)
+						.orient('left')
+						svg.append('svg:g')
+						.attr('class', 'y axis');
+
+			var menu = d3.select('#menu select')
+						.on('change', change);
+
+			//import data from .csv file
+			d3.csv('d3', function(csv) {
+				states = csv;
+				redraw();
+			});
+
+			d3.select(window)
+						.on('keydown', function() { altKey = d3.event.altKey; })
+						.on('keyup', function() { altKey = false; });
+
+			var altKey;
+
+			function change() {
+				clearTimeout(timeout);
+
+				d3.transition()
+						.duration(altKey ? 7500 : 1500)
+						.each(redraw);
+			}
+
+			function redraw() {
+				var nested = d3.nest()
+						.key(function(d) { return d.indicatorCode; })
+						.map(states);
+
+				var series = menu.property('value');
+
+				var data = nested[series];
+
+				var keyring = d3.keys(data[0]).filter(function(key) {
+					return (key !== 'indicatorName' && key !== 'yearCode' && key !== 'indicatorCode' && key !== 'year');
+				});
+
+				//get the year and related statistics, map them to each states separately
+				var transpose = keyring.map(function(name) {
+					return {
+						name: name,
+						values: data.map(function(d) {
+							return { year: parseDate(d.year), stat: +d[name]};
+						})
+					};
+				});
+
+				//set the x and y domains as the max and min of the related year and statistics, repectively
+				x.domain([
+					d3.min(transpose, function(c) { return d3.min(c.values, function(v) { return v.year; }); }),
+					d3.max(transpose, function(c) { return d3.max(c.values, function(v) { return v.year; }); })
+				]);
+
+				y.domain([
+					d3.min(transpose, function(c) { return d3.min(c.values, function(v) { return v.stat; }); }),
+					d3.max(transpose, function(c) { return d3.max(c.values, function(v) { return v.stat; }); })
+				]);
+
+				//announce to d3 that we will use something called 'states' that makes use of transposed data
+				var state = svg.selectAll('.country').data(transpose);
+
+				//create separate groups for each states
+				//assign them a class and individual IDs
+				var stateEnter = state.enter().append('g')
+								.attr('class', 'state')
+								.attr('id', function(d) { return d.name; });
+
+				//draw the lines and color them according to the names
+				stateEnter.append('path')
+				.attr('class', 'line')
+				.datum(function(d) { return {name: d.name, value: d.value[d.values.length - 1]}; })
+				.attr('transform', function(d) { return 'translate(' + x(d.value.year) + ',' + y(d.value.stat) + ')'; })
+				.attr('x', 4)
+				.attr('dy', '.35em')
+				.text(function(d) { return d.name; });
+
+				//set variable for updating visualization
+				var stateUpdate = d3.transition(state);
+
+				//change values of path to those of the new series
+				stateUpdate.select('path').attr('d', function(d) { return line(d.values); });
+
+				//change position of text alongside the moving path
+				stateUpdate.select('text').attr('transform', funciton(d) { return 'translate(' + x(d.values[d.values.length - 1].year) + ',' + y(d.values[d.values.length - 1].stat) + ')'; });
+
+				//update the axes, though only the y axis will change
+				d3.transition(svg).select('.y.axis').call(yAxis);
+				d3.transition(svg).select('.x.axis').attr('transform', 'translate(0,' + height + ')').call(xAxis);
+			} //end of redraw()
+
+			//change option every few seconds automatically
+			var timeout = setTimeout(function() {
+				menu.property('value', 'PA').node().focus();
+				change();
+			}, 10000);
+		</script>
+
+	</body>
+
+
+
+
+

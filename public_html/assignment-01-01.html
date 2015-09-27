@@ -25,36 +25,53 @@ and open the template in the editor.
 							.attr('width', 1000)
 							.attr('height', 1000);
 			
-//			var coor = {
-//				'x1': 0,
-//				'y1': 0,
-//				'x2': 10,
-//				'y2': 10
-//			};
+			var axisGroup = svg.append('g').attr('stroke', 'darkgray').attr('stroke-width', '3px');
+			axisGroup.append('line').attr('id', 'X-Axis').attr({'x1': 50, 'y1': 500, 'x2': 450, 'y2': 500});
+			axisGroup.append('line').attr('id', 'Y-Axis').attr({'x1': 50, 'y1': 0, 'x2': 50, 'y2': 500});
+			axisGroup.append('line').attr('id', 'x-marks').attr({'x1': 70, 'y1': 500, 'x2': 70, 'y2': 495});
+			axisGroup.append('line').attr('id', 'x-marks').attr({'x1': 120, 'y1': 500, 'x2': 120, 'y2': 495});
+			axisGroup.append('line').attr('id', 'x-marks').attr({'x1': 170, 'y1': 500, 'x2': 170, 'y2': 495});
+			axisGroup.append('line').attr('id', 'x-marks').attr({'x1': 220, 'y1': 500, 'x2': 220, 'y2': 495});
+			axisGroup.append('line').attr('id', 'x-marks').attr({'x1': 270, 'y1': 500, 'x2': 270, 'y2': 495});
+			axisGroup.append('line').attr('id', 'x-marks').attr({'x1': 320, 'y1': 500, 'x2': 320, 'y2': 495});
+			axisGroup.append('line').attr('id', 'x-marks').attr({'x1': 370, 'y1': 500, 'x2': 370, 'y2': 495});
+			axisGroup.append('line').attr('id', 'x-marks').attr({'x1': 420, 'y1': 500, 'x2': 420, 'y2': 495});
+			axisGroup.append('line').attr('id', 'y-marks').attr({'x1': 50, 'y1': 450, 'x2': 55, 'y2': 450});
+			axisGroup.append('line').attr('id', 'y-marks').attr({'x1': 50, 'y1': 400, 'x2': 55, 'y2': 400});
+			axisGroup.append('line').attr('id', 'y-marks').attr({'x1': 50, 'y1': 350, 'x2': 55, 'y2': 350});
+			axisGroup.append('line').attr('id', 'y-marks').attr({'x1': 50, 'y1': 300, 'x2': 55, 'y2': 300});
+			axisGroup.append('line').attr('id', 'y-marks').attr({'x1': 50, 'y1': 250, 'x2': 55, 'y2': 250});
+			axisGroup.append('line').attr('id', 'y-marks').attr({'x1': 50, 'y1': 200, 'x2': 55, 'y2': 200});
+			axisGroup.append('line').attr('id', 'y-marks').attr({'x1': 50, 'y1': 150, 'x2': 55, 'y2': 150});
+			axisGroup.append('line').attr('id', 'y-marks').attr({'x1': 50, 'y1': 100, 'x2': 55, 'y2': 100});
+			axisGroup.append('text').attr({'x': 0, 'y': 450, 'font-size': 55}).text('450');
+
 			
-			var axisGroup = svg.append('g').attr('stroke', 'darkgray');
-			axisGroup.append('line').attr('id', 'X-Axis').attr('x1', 10).attr('y1', 500).attr('x2', 450).attr('y2', 500);
-			axisGroup.append('line').attr('id', 'Y-Axis').attr('x1', 10).attr('y1', 0).attr('x2', 10).attr('y2', 500);
+			var white = svg.append('g').attr('stroke', 'steelblue').attr('stroke-width', '3px');
 			
-			var white = svg.append('g').attr('stroke', 'steelblue');
-			white.append('line').attr('x1', 20).attr('y1', 312.04).attr('x2', 70).attr('y2', 310.60);
-			white.append('line').attr('x1', 70).attr('y1', 310.60).attr('x2', 120).attr('y2', 308.29);
-			white.append('line').attr('x1', 120).attr('y1', 308.29).attr('x2', 170).attr('y2', 307.49);
-			white.append('line').attr('x1', 170).attr('y1', 307.49).attr('x2', 220).attr('y2', 304.01);
-			white.append('line').attr('x1', 220).attr('y1', 304.01).attr('x2', 270).attr('y2', 314.7);
-			white.append('line').attr('x1', 270).attr('y1', 314.70).attr('x2', 320).attr('y2', 329.76);
-			white.append('line').attr('x1', 320).attr('y1', 329.76).attr('x2', 370).attr('y2', 339.68);
-			white.append('line').attr('x1', 370).attr('y1', 339.68).attr('x2', 420).attr('y2', 337.73);
+			// var anExampleLabel = svg.append('text').attr({
+			// 	'x': 250,
+			// 	'y': 150,
+			// 	'font-size': 55
+			// }).text('Hello, out there');
 			
-			var black = svg.append('g').attr('stroke', 'red');
-			black.append('line').attr('x1', 20).attr('y1', 389.59).attr('x2', 70).attr('y2', 390.89);
-			black.append('line').attr('x1', 70).attr('y1', 390.89).attr('x2', 120).attr('y2', 390.71);
-			black.append('line').attr('x1', 120).attr('y1', 390.71).attr('x2', 170).attr('y2', 392.54);
-			black.append('line').attr('x1', 170).attr('y1', 392.54).attr('x2', 220).attr('y2', 393.25);
-			black.append('line').attr('x1', 220).attr('y1', 393.25).attr('x2', 270).attr('y2', 400.56);
-			black.append('line').attr('x1', 270).attr('y1', 400.56).attr('x2', 320).attr('y2', 406.21);
-			black.append('line').attr('x1', 320).attr('y1', 406.21).attr('x2', 370).attr('y2', 407.63);
-			black.append('line').attr('x1', 370).attr('y1', 407.63).attr('x2', 420).attr('y2', 409.52);
+			white.append('line').attr({'x1': 70, 'y1': 310.60, 'x2': 120, 'y2': 308.29});
+			white.append('line').attr({'x1': 120, 'y1': 308.29, 'x2': 170, 'y2': 307.49});
+			white.append('line').attr({'x1': 170, 'y1': 307.49, 'x2': 220, 'y2': 304.01});
+			white.append('line').attr({'x1': 220, 'y1': 304.01, 'x2': 270, 'y2': 314.7});
+			white.append('line').attr({'x1': 270, 'y1': 314.70, 'x2': 320, 'y2': 329.76});
+			white.append('line').attr({'x1': 320, 'y1': 329.76, 'x2': 370, 'y2': 339.68});
+			white.append('line').attr({'x1': 370, 'y1': 339.68, 'x2': 420, 'y2': 337.73});
+			
+			var black = svg.append('g').attr('stroke', 'red').attr('stroke-width', '3px');
+			
+			black.append('line').attr({'x1': 70, 'y1': 390.89, 'x2': 120, 'y2': 390.71});
+			black.append('line').attr({'x1': 120, 'y1': 390.71, 'x2': 170, 'y2': 392.54});
+			black.append('line').attr({'x1': 170, 'y1': 392.54, 'x2': 220, 'y2': 393.25});
+			black.append('line').attr({'x1': 220, 'y1': 393.25, 'x2': 270, 'y2': 400.56});
+			black.append('line').attr({'x1': 270, 'y1': 400.56, 'x2': 320, 'y2': 406.21});
+			black.append('line').attr({'x1': 320, 'y1': 406.21, 'x2': 370, 'y2': 407.63});
+			black.append('line').attr({'x1': 370, 'y1': 407.63, 'x2': 420, 'y2': 409.52});
 			
 
 		</script>
