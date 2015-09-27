@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+  <head>
+    <title>assignment-01-02</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<style>
+			
+			body {
+				margin: auto;
+			}
+			.bar {
+				fill: lightblue;
+				opacity: 0.7;
+			}
+			
+			.bar:hover {
+				fill: brown;
+			}
+			
+			.x-axis {
+				font: 10px sans-serif;
+			}
+			
+			.y-axis {
+				font: 15px sans-serif;
+			}
+			
+			.axis path,
+			.axis line {
+				fill: none;
+				stroke: darkgray;
+				shape-rendering: crispEdges;
+			}
+			
+			.x-axis path {
+				display: none;
+			}
+			
+		
+		</style>
+  </head>
+	
+  <body>
+		<div><h1>Poverty Level of Each States in the U.S. (2007)</h1></div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+		
+		<script>
+			
+			var margin = { top: 20, left: 150, bottom: 50, right: 20};
+			var width = 1500 - margin.left - margin.right,
+					height = 800 - margin.top - margin.bottom,
+					barWidth = Math.floor(width/51) - 1;
+	
+			var svg = d3.selectAll('body').append('svg')
+							.attr('width', width + margin.left + margin.right)
+							.attr('height', height + margin.top + margin.bottom)
+							.append('g')
+							.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+			
+			var padding = { top: 20, bottom: 20, left: 30, right: 30 };
+			
+			var x = d3.scale.ordinal().rangeRoundBands([0, width], 0.1),
+					y = d3.scale.linear().range([height, 0]);
+			
+			var xAxis = d3.svg.axis()
+							.scale(x)
+							.orient('bottom'),
+					yAxis = d3.svg.axis()
+							.scale(y)
+							.orient('left')
+							.ticks(10);
+			
+//			var ytags = svg.append('text')
+//							.attr('class', 'y-tags')
+//							.attr('dy', '.71em')
+//							.text('2007');
+			
+			d3.csv('pov-states-2007.csv', type, function(error, data) {
+				if (error) throw error;
+				
+				x.domain(data.map(function(d) { return d.state; }));
+				y.domain([0, d3.max(data, function(d) { return d.pov; })]);
+				
+				svg.append('g')
+								.attr('class', 'x-axis')
+								.attr('transform', 'translate(0,' + height + ')')
+								.call(xAxis);
+				
+				svg.append('g')
+								.attr('class', 'y-axis')
+								.call(yAxis)
+								.append('text')
+								.attr('transform', 'rotate(-90)')
+								.attr('y', 6)
+								.attr('dy', '.71em')
+								.style('text-anchor', 'end')
+								.text('Poverty (%)');
+				
+				svg.selectAll('.bar')
+								.data(data)
+								.enter().append('rect')
+								.attr('class', 'bar')
+								.attr('x', function(d) { return x(d.state); })
+								.attr('width', x.rangeBand())
+								.attr('y', function(d) { return y(d.pov); })
+								.attr('height', function(d) { return height - y(d.pov); });
+			});
+			
+			function type(d) {
+				d.pov = +d.pov;
+				return d;
+			}
+		</script>	
+  </body>
+</html>
