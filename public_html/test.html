@@ -9,10 +9,17 @@
 				position: relative;
 			}
 
-			line {
+			#line-white {
 				fill: steelblue;
 				stroke: 1px;
 			}
+			
+			svg {
+				margin: { top:20, bottom:20, left: 20, right:20};
+				
+			}
+			
+			
 			 
 			
 
@@ -62,11 +69,14 @@
 			
 			var yAxis = d3.svg.axis()
 							.scale(y)
-							.orient('right');
+							.orient('left')
+							.ticks(10);
 			
 			var line = d3.svg.line()
 							.x(function(d) { return x(d.year); })
-							.y(function(d) { return y(d.pov); });
+							.y(function(d) { return y(d.pov); })
+							.interpolate('monotone');
+			
 			
 			datasetW.forEach(function(d) {
 				d.year = parseDate(d.year);
@@ -81,15 +91,14 @@
 			y.domain(d3.extent(datasetW, function(d) { return d.pov; }));
 			
 			svg.append('g')
-							.attr('class', 'x axis')
+							.attr('class', 'x-axis')
 							.attr('transform', 'translate(0,' + height + ')')
 							.call(xAxis);
 			
 			svg.append('g')
-							.attr('class', 'y axis')
+							.attr('class', 'y-axis')
 							.call(yAxis)
 							.append('text')
-							.attr('transform', 'rotate(-90)')
 							.attr('y', 6)
 							.attr('dy', '.71em')
 							.style('text-anchor', 'end')
@@ -99,17 +108,17 @@
 							.datum(datasetW)
 							.attr('class', 'line')
 							.attr('d', line);
-			
-			var focus = svg.append('g')
-							.attr('class', 'focus')
-							.style('display', 'none');
-			
-			focus.append('circle')
-							.attr('r', 4.5);
-			
-			focus.append('text')
-							.attr('x', 9)
-							.attr('dy', '.35em');
+//			
+//			var focus = svg.append('g')
+//							.attr('class', 'focus')
+//							.style('display', 'none');
+//			
+//			focus.append('circle')
+//							.attr('r', 4.5);
+//			
+//			focus.append('text')
+//							.attr('x', 9)
+//							.attr('dy', '.35em');
 			
 //			svg.append('rect')
 //							.attr('class', 'overlay')
