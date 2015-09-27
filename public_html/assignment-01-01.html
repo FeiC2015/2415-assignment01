@@ -9,58 +9,55 @@ and open the template in the editor.
     <title>Poverty Across Races Over Time</title>
 		
 		<style>
-			div.bar {
-				display: inline-block;
-				width: 20px;
-				height: 75px;
-				margin-right: 2px;
-				background-color: lightgray;
+			#povery-by-race {
+				border: 2px darkorange
 			}
 			
 		</style>
 	</head>
 	<body>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-<!--		<script type="text/javascript">
 
-			//Width and height
-			var w = 500;
-			var h = 100;
+		<script>
+			var svg = d3.selectAll('body')
+							.append('svg')
+							.attr('id', 'poverty-by-race')
+							.attr('width', 1000)
+							.attr('height', 1000);
 			
-			var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
-							11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
+//			var coor = {
+//				'x1': 0,
+//				'y1': 0,
+//				'x2': 10,
+//				'y2': 10
+//			};
 			
-			//Create SVG element
-			var svg = d3.select("body")
-						.append("svg")
-						.attr("width", w)
-						.attr("height", h);
+			var axisGroup = svg.append('g').attr('stroke', 'darkgray');
+			axisGroup.append('line').attr('id', 'X-Axis').attr('x1', 10).attr('y1', 500).attr('x2', 450).attr('y2', 500);
+			axisGroup.append('line').attr('id', 'Y-Axis').attr('x1', 10).attr('y1', 0).attr('x2', 10).attr('y2', 500);
+			
+			var white = svg.append('g').attr('stroke', 'steelblue');
+			white.append('line').attr('x1', 20).attr('y1', 312.04).attr('x2', 70).attr('y2', 310.60);
+			white.append('line').attr('x1', 70).attr('y1', 310.60).attr('x2', 120).attr('y2', 308.29);
+			white.append('line').attr('x1', 120).attr('y1', 308.29).attr('x2', 170).attr('y2', 307.49);
+			white.append('line').attr('x1', 170).attr('y1', 307.49).attr('x2', 220).attr('y2', 304.01);
+			white.append('line').attr('x1', 220).attr('y1', 304.01).attr('x2', 270).attr('y2', 314.7);
+			white.append('line').attr('x1', 270).attr('y1', 314.70).attr('x2', 320).attr('y2', 329.76);
+			white.append('line').attr('x1', 320).attr('y1', 329.76).attr('x2', 370).attr('y2', 339.68);
+			white.append('line').attr('x1', 370).attr('y1', 339.68).attr('x2', 420).attr('y2', 337.73);
+			
+			var black = svg.append('g').attr('stroke', 'red');
+			black.append('line').attr('x1', 20).attr('y1', 389.59).attr('x2', 70).attr('y2', 390.89);
+			black.append('line').attr('x1', 70).attr('y1', 390.89).attr('x2', 120).attr('y2', 390.71);
+			black.append('line').attr('x1', 120).attr('y1', 390.71).attr('x2', 170).attr('y2', 392.54);
+			black.append('line').attr('x1', 170).attr('y1', 392.54).attr('x2', 220).attr('y2', 393.25);
+			black.append('line').attr('x1', 220).attr('y1', 393.25).attr('x2', 270).attr('y2', 400.56);
+			black.append('line').attr('x1', 270).attr('y1', 400.56).attr('x2', 320).attr('y2', 406.21);
+			black.append('line').attr('x1', 320).attr('y1', 406.21).attr('x2', 370).attr('y2', 407.63);
+			black.append('line').attr('x1', 370).attr('y1', 407.63).attr('x2', 420).attr('y2', 409.52);
+			
 
-			svg.selectAll("rect")
-			   .data(dataset)
-			   .enter()
-			   .append("rect")
-			   .attr("x", function(d, i) {
-			   		return i * 21;	//Bar width of 20 plus 1 for padding
-			   })
-			   .attr("y", 0)
-			   .attr("width", 20)
-			   .attr("height", 100);
-			
-		</script>-->
-		<script type="text/javascript">
-			var data = [29935, 18796, 11959, 1785, 12744];
-			
-			d3.selectAll("body")
-							.data(data)
-							.enter()
-							.append("div")
-							.attr("class", "bar")
-							.style("height", function(d) {
-								var barHeight = d;
-								return barHeight + "px";
-							});		
-		</script>		
+		</script>
   </body>
 	
 </html>
