@@ -17,64 +17,82 @@ and open the template in the editor.
 	</head>
 	<body>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+			<script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
+		<div id='chartContainer'>
+<!-- 			// <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+			// <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script> -->
 
-		<script>
-			var svg = d3.selectAll('body')
-							.append('svg')
-							.attr('id', 'poverty-by-race')
-							.attr('width', 1000)
-							.attr('height', 1000);
-			
-			var axisGroup = svg.append('g').attr('stroke', 'darkgray').attr('stroke-width', '3px');
-			axisGroup.append('line').attr('id', 'X-Axis').attr({'x1': 50, 'y1': 500, 'x2': 450, 'y2': 500});
-			axisGroup.append('line').attr('id', 'Y-Axis').attr({'x1': 50, 'y1': 0, 'x2': 50, 'y2': 500});
-			axisGroup.append('line').attr('id', 'x-marks').attr({'x1': 70, 'y1': 500, 'x2': 70, 'y2': 495});
-			axisGroup.append('line').attr('id', 'x-marks').attr({'x1': 120, 'y1': 500, 'x2': 120, 'y2': 495});
-			axisGroup.append('line').attr('id', 'x-marks').attr({'x1': 170, 'y1': 500, 'x2': 170, 'y2': 495});
-			axisGroup.append('line').attr('id', 'x-marks').attr({'x1': 220, 'y1': 500, 'x2': 220, 'y2': 495});
-			axisGroup.append('line').attr('id', 'x-marks').attr({'x1': 270, 'y1': 500, 'x2': 270, 'y2': 495});
-			axisGroup.append('line').attr('id', 'x-marks').attr({'x1': 320, 'y1': 500, 'x2': 320, 'y2': 495});
-			axisGroup.append('line').attr('id', 'x-marks').attr({'x1': 370, 'y1': 500, 'x2': 370, 'y2': 495});
-			axisGroup.append('line').attr('id', 'x-marks').attr({'x1': 420, 'y1': 500, 'x2': 420, 'y2': 495});
-			axisGroup.append('line').attr('id', 'y-marks').attr({'x1': 50, 'y1': 450, 'x2': 55, 'y2': 450});
-			axisGroup.append('line').attr('id', 'y-marks').attr({'x1': 50, 'y1': 400, 'x2': 55, 'y2': 400});
-			axisGroup.append('line').attr('id', 'y-marks').attr({'x1': 50, 'y1': 350, 'x2': 55, 'y2': 350});
-			axisGroup.append('line').attr('id', 'y-marks').attr({'x1': 50, 'y1': 300, 'x2': 55, 'y2': 300});
-			axisGroup.append('line').attr('id', 'y-marks').attr({'x1': 50, 'y1': 250, 'x2': 55, 'y2': 250});
-			axisGroup.append('line').attr('id', 'y-marks').attr({'x1': 50, 'y1': 200, 'x2': 55, 'y2': 200});
-			axisGroup.append('line').attr('id', 'y-marks').attr({'x1': 50, 'y1': 150, 'x2': 55, 'y2': 150});
-			axisGroup.append('line').attr('id', 'y-marks').attr({'x1': 50, 'y1': 100, 'x2': 55, 'y2': 100});
-			axisGroup.append('text').attr({'x': 0, 'y': 450, 'font-size': 55}).text('450');
+			<script>
+				var svg = dimple.newSvg('#chartContainer', 1000, 800);
 
-			
-			var white = svg.append('g').attr('stroke', 'steelblue').attr('stroke-width', '3px');
-			
-			// var anExampleLabel = svg.append('text').attr({
-			// 	'x': 250,
-			// 	'y': 150,
-			// 	'font-size': 55
-			// }).text('Hello, out there');
-			
-			white.append('line').attr({'x1': 70, 'y1': 310.60, 'x2': 120, 'y2': 308.29});
-			white.append('line').attr({'x1': 120, 'y1': 308.29, 'x2': 170, 'y2': 307.49});
-			white.append('line').attr({'x1': 170, 'y1': 307.49, 'x2': 220, 'y2': 304.01});
-			white.append('line').attr({'x1': 220, 'y1': 304.01, 'x2': 270, 'y2': 314.7});
-			white.append('line').attr({'x1': 270, 'y1': 314.70, 'x2': 320, 'y2': 329.76});
-			white.append('line').attr({'x1': 320, 'y1': 329.76, 'x2': 370, 'y2': 339.68});
-			white.append('line').attr({'x1': 370, 'y1': 339.68, 'x2': 420, 'y2': 337.73});
-			
-			var black = svg.append('g').attr('stroke', 'red').attr('stroke-width', '3px');
-			
-			black.append('line').attr({'x1': 70, 'y1': 390.89, 'x2': 120, 'y2': 390.71});
-			black.append('line').attr({'x1': 120, 'y1': 390.71, 'x2': 170, 'y2': 392.54});
-			black.append('line').attr({'x1': 170, 'y1': 392.54, 'x2': 220, 'y2': 393.25});
-			black.append('line').attr({'x1': 220, 'y1': 393.25, 'x2': 270, 'y2': 400.56});
-			black.append('line').attr({'x1': 270, 'y1': 400.56, 'x2': 320, 'y2': 406.21});
-			black.append('line').attr({'x1': 320, 'y1': 406.21, 'x2': 370, 'y2': 407.63});
-			black.append('line').attr({'x1': 370, 'y1': 407.63, 'x2': 420, 'y2': 409.52});
-			
+				// data.
+				// Find new way to import data later.
+				data = [
+					{ 'race': 'white', 'year': '2002', 'pov': 15567 },
+					{ 'race': 'white', 'year': '2003', 'pov': 15902 },
+					{ 'race': 'white', 'year': '2004', 'pov': 16908 },
+					{ 'race': 'white', 'year': '2005', 'pov': 16227 },
+					{ 'race': 'white', 'year': '2006', 'pov': 16013 },
+					{ 'race': 'white', 'year': '2007', 'pov': 16032 },
+					{ 'race': 'white', 'year': '2008', 'pov': 17024 },
+					{ 'race': 'white', 'year': '2009', 'pov': 18530 },
+					{ 'race': 'white', 'year': '2010', 'pov': 19251 },
+					{ 'race': 'white', 'year': '2011', 'pov': 19171 },
+					{ 'race': 'white', 'year': '2012', 'pov': 18940 },
+					{ 'race': 'white', 'year': '2013', 'pov': 18796 },
+					{ 'race': 'black', 'year': '2002', 'pov': 8602 },
+					{ 'race': 'black', 'year': '2003', 'pov': 8781 },
+					{ 'race': 'black', 'year': '2004', 'pov': 9014 },
+					{ 'race': 'black', 'year': '2005', 'pov': 9168 },
+					{ 'race': 'black', 'year': '2006', 'pov': 9048 },
+					{ 'race': 'black', 'year': '2007', 'pov': 9237 },
+					{ 'race': 'black', 'year': '2008', 'pov': 9379 },
+					{ 'race': 'black', 'year': '2009', 'pov': 9944 },
+					{ 'race': 'black', 'year': '2010', 'pov': 10746 },
+					{ 'race': 'black', 'year': '2011', 'pov': 10929 },
+					{ 'race': 'black', 'year': '2012', 'pov': 10911 },
+					{ 'race': 'black', 'year': '2013', 'pov': 11041 },
+					{ 'race': 'asian', 'year': '2002', 'pov': 1161 },
+					{ 'race': 'asian', 'year': '2003', 'pov': 1401 },
+					{ 'race': 'asian', 'year': '2004', 'pov': 1201 },
+					{ 'race': 'asian', 'year': '2005', 'pov': 1402 },
+					{ 'race': 'asian', 'year': '2006', 'pov': 1353 },
+					{ 'race': 'asian', 'year': '2007', 'pov': 1349 },
+					{ 'race': 'asian', 'year': '2008', 'pov': 1576 },
+					{ 'race': 'asian', 'year': '2009', 'pov': 1746 },
+					{ 'race': 'asian', 'year': '2010', 'pov': 1899 },
+					{ 'race': 'asian', 'year': '2011', 'pov': 1973 },
+					{ 'race': 'asian', 'year': '2012', 'pov': 1921 },
+					{ 'race': 'asian', 'year': '2013', 'pov': 1785 },
+					{ 'race': 'hispanic', 'year': '2002', 'pov': 8555},
+					{ 'race': 'hispanic', 'year': '2003', 'pov': 9051 },
+					{ 'race': 'hispanic', 'year': '2004', 'pov': 9122 },
+					{ 'race': 'hispanic', 'year': '2005', 'pov': 9368 },
+					{ 'race': 'hispanic', 'year': '2006', 'pov': 9243 },
+					{ 'race': 'hispanic', 'year': '2007', 'pov': 9890 },
+					{ 'race': 'hispanic', 'year': '2008', 'pov': 10987 },
+					{ 'race': 'hispanic', 'year': '2009', 'pov': 12350 },
+					{ 'race': 'hispanic', 'year': '2010', 'pov': 13522 },
+					{ 'race': 'hispanic', 'year': '2011', 'pov': 13244 },
+					{ 'race': 'hispanic', 'year': '2012', 'pov': 13616 },
+					{ 'race': 'hispanic', 'year': '2013', 'pov': 12744 },
+				];
 
-		</script>
-  </body>
-	
+				var myChart = new dimple.chart(svg, data);
+				myChart.setBounds(140, 80, 490, 640);
+
+				var x = myChart.addTimeAxis('x', 'year', '%Y', '%Y');
+				var y = myChart.addMeasureAxis('y', 'pov');
+
+
+				myChart.addSeries('race', dimple.plot.bubble);
+				var s = myChart.addSeries('race', dimple.plot.line);
+
+				s.lineMarker = true;
+				myChart.addLegend(180, 10, 360, 20, 'right');
+				myChart.draw();
+
+			</script>
+		</div>
+	</body>	
 </html>
