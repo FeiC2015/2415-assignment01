@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>assignment-01-02</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -->	
+		<style>
+			
+			body {
+				margin: auto;
+				/*border: 2px solid red;*/
+				padding-top: 20px;
+			}
+			.bar {
+				fill: lightblue;
+				opacity: 0.7;
+			}
+			
+			.bar:hover { fill: steelblue; }
+			
+			.x-axis { font: 10px sans-serif; }
+			
+			.y-axis { font: 15px sans-serif; }
+			
+			.axis path,
+			.axis line {
+				fill: none;
+				stroke: darkgray;
+				shape-rendering: crispEdges;
+			}
+			
+			.x-axis path { display: none; }
+
+			.title {
+				font: 20px Arial;
+				color: #101010;
+			}
+		</style>
+	<!-- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -->		
+  </head>
+	
+  <body>
+
+
+	<!-- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -->
+	<script src="assignment-01-02-result-2007_files/d3.js"></script>
+	
+	<script>
+		
+		var margin = { top: 20, left: 150, bottom: 50, right: 20};
+		var width = 1500 - margin.left - margin.right,
+				height = 800 - margin.top - margin.bottom,
+				barWidth = Math.floor(width/51) - 1;
+
+		var svg = d3.selectAll('body').append('svg')
+						.attr('width', width + margin.left + margin.right)
+						.attr('height', height + margin.top + margin.bottom)
+						.attr('border', '2px')
+						.append('g')
+						.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+		svg.append('text')
+			.attr('x', 500)
+			.attr('y', 0)
+			.attr('class', 'title')
+			.text('Poverty Level of Each States in the U.S. (2007)')
+		
+		var padding = { top: 20, bottom: 20, left: 30, right: 30 };
+		
+		var x = d3.scale.ordinal().rangeRoundBands([0, width], 0.1),
+				y = d3.scale.linear().range([height, 0]);
+		
+		var xAxis = d3.svg.axis()
+						.scale(x)
+						.orient('bottom'),
+				yAxis = d3.svg.axis()
+						.scale(y)
+						.orient('left')
+						.ticks(10);
+		
+//			var ytags = svg.append('text')
+//							.attr('class', 'y-tags')
+//							.attr('dy', '.71em')
+//							.text('2007');
+		
+		d3.csv('pov-states-2007.csv', type, function(error, data) {
+			if (error) throw error;
+			
+			x.domain(data.map(function(d) { return d.state; }));
+			y.domain([0, d3.max(data, function(d) { return d.pov; })]);
+			
+			svg.append('g')
+				.attr('class', 'x-axis')
+				.attr('transform', 'translate(0,' + height + ')')
+				.call(xAxis);
+			
+			svg.append('g')
+				.attr('class', 'y-axis')
+				.call(yAxis)
+				.append('text')
+				.attr('transform', 'rotate(-90)')
+				.attr('y', 6)
+				.attr('dy', '.71em')
+				.style('text-anchor', 'end')
+				.text('Poverty (%)');
+			
+			svg.selectAll('.bar')
+				.data(data)
+				.enter().append('rect')
+				.attr('class', 'bar')
+				.attr('x', function(d) { return x(d.state); })
+				.attr('width', x.rangeBand())
+				.attr('y', function(d) { return y(d.pov); })
+				.attr('height', function(d) { return height - y(d.pov); })
+				.append('text')
+				.text(function(d) { return 'y(d.pov)' });
+		});
+		
+		function type(d) {
+			d.pov = +d.pov;
+			return d;
+		}
+	</script><svg border="2px" height="800" width="1500"><g transform="translate(150,20)"><text class="title" y="0" x="500">Poverty Level of Each States in the U.S. (2007)</text><g transform="translate(0,730)" class="x-axis"><g transform="translate(14.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">AL</text></g><g transform="translate(40.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">AK</text></g><g transform="translate(66.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">AZ</text></g><g transform="translate(92.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">AR</text></g><g transform="translate(118.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">CA</text></g><g transform="translate(144.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">CO</text></g><g transform="translate(170.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">CT</text></g><g transform="translate(196.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">DE</text></g><g transform="translate(222.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">DC</text></g><g transform="translate(248.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">FL</text></g><g transform="translate(274.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">GA</text></g><g transform="translate(300.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">HI</text></g><g transform="translate(326.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">ID</text></g><g transform="translate(352.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">IL</text></g><g transform="translate(378.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">IN</text></g><g transform="translate(404.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">IA</text></g><g transform="translate(430.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">KS</text></g><g transform="translate(456.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">KY</text></g><g transform="translate(482.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">LA</text></g><g transform="translate(508.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">ME</text></g><g transform="translate(534.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">MD</text></g><g transform="translate(560.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">MA</text></g><g transform="translate(586.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">MI</text></g><g transform="translate(612.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">MN</text></g><g transform="translate(638.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">MS</text></g><g transform="translate(664.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">MO</text></g><g transform="translate(690.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">MT</text></g><g transform="translate(716.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">NE</text></g><g transform="translate(742.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">NV</text></g><g transform="translate(768.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">NH</text></g><g transform="translate(794.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">NJ</text></g><g transform="translate(820.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">NM</text></g><g transform="translate(846.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">NY</text></g><g transform="translate(872.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">NC</text></g><g transform="translate(898.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">ND</text></g><g transform="translate(924.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">OH</text></g><g transform="translate(950.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">OK</text></g><g transform="translate(976.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">OR</text></g><g transform="translate(1002.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">PA</text></g><g transform="translate(1028.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">RI</text></g><g transform="translate(1054.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">SC</text></g><g transform="translate(1080.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">SD</text></g><g transform="translate(1106.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">TN</text></g><g transform="translate(1132.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">TX</text></g><g transform="translate(1158.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">UT</text></g><g transform="translate(1184.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">VT</text></g><g transform="translate(1210.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">VA</text></g><g transform="translate(1236.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">WA</text></g><g transform="translate(1262.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">WV</text></g><g transform="translate(1288.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">WI</text></g><g transform="translate(1314.5,0)" style="opacity: 1;" class="tick"><line x2="0" y2="6"></line><text x="0" y="9" style="text-anchor: middle;" dy=".71em">WY</text></g><path d="M0,6V0H1330V6" class="domain"></path></g><g class="y-axis"><g transform="translate(0,730)" style="opacity: 1;" class="tick"><line y2="0" x2="-6"></line><text y="0" x="-9" style="text-anchor: end;" dy=".32em">0</text></g><g transform="translate(0,665.3982300884956)" style="opacity: 1;" class="tick"><line y2="0" x2="-6"></line><text y="0" x="-9" style="text-anchor: end;" dy=".32em">2</text></g><g transform="translate(0,600.7964601769911)" style="opacity: 1;" class="tick"><line y2="0" x2="-6"></line><text y="0" x="-9" style="text-anchor: end;" dy=".32em">4</text></g><g transform="translate(0,536.1946902654868)" style="opacity: 1;" class="tick"><line y2="0" x2="-6"></line><text y="0" x="-9" style="text-anchor: end;" dy=".32em">6</text></g><g transform="translate(0,471.5929203539823)" style="opacity: 1;" class="tick"><line y2="0" x2="-6"></line><text y="0" x="-9" style="text-anchor: end;" dy=".32em">8</text></g><g transform="translate(0,406.9911504424779)" style="opacity: 1;" class="tick"><line y2="0" x2="-6"></line><text y="0" x="-9" style="text-anchor: end;" dy=".32em">10</text></g><g transform="translate(0,342.3893805309735)" style="opacity: 1;" class="tick"><line y2="0" x2="-6"></line><text y="0" x="-9" style="text-anchor: end;" dy=".32em">12</text></g><g transform="translate(0,277.78761061946904)" style="opacity: 1;" class="tick"><line y2="0" x2="-6"></line><text y="0" x="-9" style="text-anchor: end;" dy=".32em">14</text></g><g transform="translate(0,213.18584070796462)" style="opacity: 1;" class="tick"><line y2="0" x2="-6"></line><text y="0" x="-9" style="text-anchor: end;" dy=".32em">16</text></g><g transform="translate(0,148.58407079646025)" style="opacity: 1;" class="tick"><line y2="0" x2="-6"></line><text y="0" x="-9" style="text-anchor: end;" dy=".32em">18</text></g><g transform="translate(0,83.9823008849558)" style="opacity: 1;" class="tick"><line y2="0" x2="-6"></line><text y="0" x="-9" style="text-anchor: end;" dy=".32em">20</text></g><g transform="translate(0,19.380530973451357)" style="opacity: 1;" class="tick"><line y2="0" x2="-6"></line><text y="0" x="-9" style="text-anchor: end;" dy=".32em">22</text></g><path d="M-6,0H0V730H-6" class="domain"></path><text style="text-anchor: end;" dy=".71em" y="6" transform="rotate(-90)">Poverty (%)</text></g><rect height="468.3628318584071" y="261.6371681415929" width="23" x="3" class="bar"><text>y(d.pov)</text></rect><rect height="245.4867256637168" y="484.5132743362832" width="23" x="29" class="bar"><text>y(d.pov)</text></rect><rect height="461.9026548672566" y="268.0973451327434" width="23" x="55" class="bar"><text>y(d.pov)</text></rect><rect height="445.7522123893805" y="284.2477876106195" width="23" x="81" class="bar"><text>y(d.pov)</text></rect><rect height="410.2212389380531" y="319.7787610619469" width="23" x="107" class="bar"><text>y(d.pov)</text></rect><rect height="316.5486725663717" y="413.4513274336283" width="23" x="133" class="bar"><text>y(d.pov)</text></rect><rect height="287.47787610619474" y="442.52212389380526" width="23" x="159" class="bar"><text>y(d.pov)</text></rect><rect height="300.3982300884956" y="429.6017699115044" width="23" x="185" class="bar"><text>y(d.pov)</text></rect><rect height="581.4159292035397" y="148.58407079646025" width="23" x="211" class="bar"><text>y(d.pov)</text></rect><rect height="403.76106194690266" y="326.23893805309734" width="23" x="237" class="bar"><text>y(d.pov)</text></rect><rect height="439.29203539823004" y="290.70796460176996" width="23" x="263" class="bar"><text>y(d.pov)</text></rect><rect height="242.25663716814154" y="487.74336283185846" width="23" x="289" class="bar"><text>y(d.pov)</text></rect><rect height="319.7787610619469" y="410.2212389380531" width="23" x="315" class="bar"><text>y(d.pov)</text></rect><rect height="323.0088495575221" y="406.9911504424779" width="23" x="341" class="bar"><text>y(d.pov)</text></rect><rect height="381.15044247787614" y="348.84955752212386" width="23" x="367" class="bar"><text>y(d.pov)</text></rect><rect height="287.47787610619474" y="442.52212389380526" width="23" x="393" class="bar"><text>y(d.pov)</text></rect><rect height="377.9203539823008" y="352.0796460176992" width="23" x="419" class="bar"><text>y(d.pov)</text></rect><rect height="500.6637168141593" y="229.33628318584073" width="23" x="445" class="bar"><text>y(d.pov)</text></rect><rect height="520.0442477876106" y="209.95575221238937" width="23" x="471" class="bar"><text>y(d.pov)</text></rect><rect height="352.0796460176991" y="377.9203539823009" width="23" x="497" class="bar"><text>y(d.pov)</text></rect><rect height="284.2477876106194" y="445.7522123893806" width="23" x="523" class="bar"><text>y(d.pov)</text></rect><rect height="361.76991150442467" y="368.23008849557533" width="23" x="549" class="bar"><text>y(d.pov)</text></rect><rect height="348.849557522124" y="381.150442477876" width="23" x="575" class="bar"><text>y(d.pov)</text></rect><rect height="300.3982300884956" y="429.6017699115044" width="23" x="601" class="bar"><text>y(d.pov)</text></rect><rect height="730" y="0" width="23" x="627" class="bar"><text>y(d.pov)</text></rect><rect height="413.4513274336283" y="316.5486725663717" width="23" x="653" class="bar"><text>y(d.pov)</text></rect><rect height="419.91150442477874" y="310.08849557522126" width="23" x="679" class="bar"><text>y(d.pov)</text></rect><rect height="319.7787610619469" y="410.2212389380531" width="23" x="705" class="bar"><text>y(d.pov)</text></rect><rect height="313.31858407079636" y="416.68141592920364" width="23" x="731" class="bar"><text>y(d.pov)</text></rect><rect height="187.3451327433628" y="542.6548672566372" width="23" x="757" class="bar"><text>y(d.pov)</text></rect><rect height="281.0176991150442" y="448.9823008849558" width="23" x="783" class="bar"><text>y(d.pov)</text></rect><rect height="452.21238938053096" y="277.78761061946904" width="23" x="809" class="bar"><text>y(d.pov)</text></rect><rect height="468.3628318584071" y="261.6371681415929" width="23" x="835" class="bar"><text>y(d.pov)</text></rect><rect height="500.6637168141593" y="229.33628318584073" width="23" x="861" class="bar"><text>y(d.pov)</text></rect><rect height="300.3982300884956" y="429.6017699115044" width="23" x="887" class="bar"><text>y(d.pov)</text></rect><rect height="413.4513274336283" y="316.5486725663717" width="23" x="913" class="bar"><text>y(d.pov)</text></rect><rect height="432.83185840707966" y="297.16814159292034" width="23" x="939" class="bar"><text>y(d.pov)</text></rect><rect height="413.4513274336283" y="316.5486725663717" width="23" x="965" class="bar"><text>y(d.pov)</text></rect><rect height="335.92920353982305" y="394.07079646017695" width="23" x="991" class="bar"><text>y(d.pov)</text></rect><rect height="306.858407079646" y="423.141592920354" width="23" x="1017" class="bar"><text>y(d.pov)</text></rect><rect height="455.4424778761062" y="274.5575221238938" width="23" x="1043" class="bar"><text>y(d.pov)</text></rect><rect height="303.62831858407077" y="426.37168141592923" width="23" x="1069" class="bar"><text>y(d.pov)</text></rect><rect height="478.05309734513276" y="251.94690265486724" width="23" x="1095" class="bar"><text>y(d.pov)</text></rect><rect height="532.9646017699115" y="197.03539823008856" width="23" x="1121" class="bar"><text>y(d.pov)</text></rect><rect height="310.08849557522126" y="419.91150442477874" width="23" x="1147" class="bar"><text>y(d.pov)</text></rect><rect height="319.7787610619469" y="410.2212389380531" width="23" x="1173" class="bar"><text>y(d.pov)</text></rect><rect height="277.787610619469" y="452.212389380531" width="23" x="1199" class="bar"><text>y(d.pov)</text></rect><rect height="329.4690265486725" y="400.5309734513275" width="23" x="1225" class="bar"><text>y(d.pov)</text></rect><rect height="478.05309734513276" y="251.94690265486724" width="23" x="1251" class="bar"><text>y(d.pov)</text></rect><rect height="355.3097345132743" y="374.6902654867257" width="23" x="1277" class="bar"><text>y(d.pov)</text></rect><rect height="352.0796460176991" y="377.9203539823009" width="23" x="1303" class="bar"><text>y(d.pov)</text></rect></g></svg>
+	<!-- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -->
+
+
+  
+
+</body></html>
